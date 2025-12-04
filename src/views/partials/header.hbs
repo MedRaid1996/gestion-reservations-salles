@@ -1,11 +1,17 @@
-<header>
+<header class="main-header">
   <h1>Système de gestion des réservations de salles</h1>
 
   {{#if user}}
-    <p>Connecté : <strong>{{user.nom}}</strong> ({{user.role}})</p>
+    <div class="user-info">
+      Connecté : <strong>{{user.nom}}</strong> ({{user.role}})
+      <form action="/logout" method="post" class="logout-form">
+        <button type="submit">Se déconnecter</button>
+      </form>
+    </div>
 
-    <form action="/logout" method="post">
-      <button type="submit">Se déconnecter</button>
-    </form>
+    <nav class="main-nav">
+      <a href="/salles">Salles</a>
+      <a href="/reservations/ma-classe">Mes réservations</a>
+    </nav>
   {{/if}}
 </header>
