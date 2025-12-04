@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= title || "Gestion des réservations de salles" %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Système de gestion des réservations de salles</h1>
+    <% if (user) { %>
+      <div class="user-info">
+        Connecté en tant que <strong><%= user.nom %></strong> (<%= user.role %>)
+        <form action="/logout" method="post" style="display:inline;">
+          <button type="submit">Se déconnecter</button>
+        </form>
+      </div>
+    <% } %>
+  </header>
+
+  <main>
+    <%- body %>
+  </main>
+</body>
+</html>
