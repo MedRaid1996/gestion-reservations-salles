@@ -1,0 +1,11 @@
+<header>
+  <h1>Système de gestion des réservations de salles</h1>
+
+  {{#if user}}
+    <p>Connecté : <strong>{{user.nom}}</strong> ({{user.role}})</p>
+
+    <form action="/logout" method="post">
+      <button type="submit">Se déconnecter</button>
+    </form>
+  {{/if}}
+</header>
