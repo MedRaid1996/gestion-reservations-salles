@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { requireAuth, requireEnseignant } = require("../middleware");
-// const db = require("../db");
+const db = require("../db");
 // const { v4: uuidv4 } = require("uuid");
 
 // Zaid: GET /reservations/ma-classe
@@ -20,12 +20,42 @@ router.get("/ma-classe", requireAuth, (req, res) => {
   });
 });
 
+// Formulaire de réservation (enseignant seulement)
+router.get("/new", requireEnseignant, (req, res) => {
+  // Charger les salles et classes depuis la BD
+  const rooms = db.prepare("SELECT id, nom FROM rooms").all();
+  const classes = db.prepare("SELECT id, nom FROM classes").all();
 
-// Zaid: POST /reservations  (réserver une salle)
-router.post("/", requireEnseignant, (req, res) => {
-  // TODO (Zaid) : implémenter la création de réservation
-  res.send("TODO: créer une réservation (Zaid)");
+  res.render("reservation_new", {
+    title: "Nouvelle réservation",
+    rooms,
+    classes
+  });
 });
+
+// Création d'une réservation
+router.post("/", requireEnseignant, (req, res) => {
+  const { salle_id, classe_id, date_debut, date_fin } = req.body;
+  const enseignant_id = req.session.user.id;
+
+  try {
+    db.prepare(`
+  INSERT INTO reservations (salle_id, classe_id, enseignant_id, date_debut, date_fin, statut)
+  VALUES (?, ?, ?, ?, ?, ?)
+`).run(salle_id, classe_id, enseignant_id, date_debut, date_fin, "ACTIVE");
+
+
+    res.redirect("/reservations/ma-classe");
+  } catch (err) {
+    console.error("Erreur création réservation:", err);
+    // TEMPORAIREMENT : afficher l'erreur exacte dans le navigateur
+    res.status(500).send("Erreur lors de la création de la réservation : " + err.message);
+  }
+});
+
+
+
+
 
 // Kamilia: PUT /reservations/:id (modifier une réservation)
 router.put("/:id", requireEnseignant, (req, res) => {

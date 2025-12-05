@@ -1,31 +1,47 @@
-<h2>Réservations de classe</h2>
+<h2>{{title}}</h2>
 
-<form method="get" action="/reservations/ma-classe">
-  <label for="classeId">ID de la classe :</label>
-  <input type="number" id="classeId" name="classeId" value="{{classeId}}" />
+{{!-- Zone spécifique à l'enseignant --}}
+{{#if isEnseignant}}
+  <a href="/reservations/new" class="btn" style="margin-bottom: 15px; display: inline-block;">
+    ➕ Créer une réservation
+  </a>
+{{/if}}
 
-  <span>ou</span>
+{{!-- Zone spécifique à l'étudiant : rechercher les réservations de sa classe --}}
+{{#unless isEnseignant}}
+  <form method="get" action="/reservations/ma-classe" style="margin-bottom: 20px;">
+    <label for="classeId">ID de la classe :</label>
+    <input type="number" id="classeId" name="classeId" value="{{classeId}}" />
 
-  <label for="classeNom">Nom de la classe :</label>
-  <input type="text" id="classeNom" name="classeNom" value="{{classeNom}}" />
+    <span style="margin: 0 8px;">ou</span>
 
-  <button type="submit">Rechercher</button>
-</form>
+    <label for="classeNom">Nom de la classe :</label>
+    <input type="text" id="classeNom" name="classeNom" value="{{classeNom}}" />
+
+    <button type="submit">Rechercher</button>
+  </form>
+{{/unless}}
 
 <hr>
 
-<table border="1" cellpadding="5">
-  <thead>
-    <tr>
-      <th>Salle</th>
-      <th>Classe</th>
-      <th>Début</th>
-      <th>Fin</th>
-      <th>Statut</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#if reservations}}
+{{!-- Tableau des réservations --}}
+{{#if reservations.length}}
+  <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Salle</th>
+        <th>Classe</th>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Statut</th>
+
+        {{#if isEnseignant}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+    </thead>
+
+    <tbody>
       {{#each reservations}}
         <tr>
           <td>{{salleNom}}</td>
@@ -33,12 +49,24 @@
           <td>{{date_debut}}</td>
           <td>{{date_fin}}</td>
           <td>{{statut}}</td>
+
+          {{#if ../isEnseignant}}
+            <td>
+              <form action="/reservations/{{id}}/annuler" method="post" style="display: inline;">
+                <button type="submit">Annuler</button>
+              </form>
+
+              <a href="/reservations/{{id}}/edit">
+                Modifier
+              </a>
+            </td>
+          {{/if}}
         </tr>
       {{/each}}
-    {{else}}
-      <tr>
-        <td colspan="5">Aucune réservation trouvée pour cette classe.</td>
-      </tr>
-    {{/if}}
-  </tbody>
-</table>
+    </tbody>
+
+  </table>
+
+{{else}}
+  <p style="margin-top: 20px;">Aucune réservation trouvée pour cette recherche.</p>
+{{/if}}
