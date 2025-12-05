@@ -1,0 +1,15 @@
+<h2>Liste des salles</h2>
+
+<p>Cette page affichera la liste des salles disponibles.</p>
+
+<ul>
+  {{#if rooms}}
+    {{#each rooms}}
+      <li>
+        <strong>{{nom}}</strong> – capacité : {{capacite}} – {{localisation}}
+      </li>
+    {{/each}}
+  {{else}}
+    <li>Aucune salle pour le moment.</li>
+  {{/if}}
+</ul>
