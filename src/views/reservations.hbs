@@ -1,13 +1,13 @@
 <h2>{{title}}</h2>
 
-{{!-- Zone spécifique à l'enseignant --}}
+{{!-- Zone spécifique à l'enseignant : Création réservation --}}
 {{#if isEnseignant}}
   <a href="/reservations/new" class="btn" style="margin-bottom: 15px; display: inline-block;">
     ➕ Créer une réservation
   </a>
 {{/if}}
 
-{{!-- Zone spécifique à l'étudiant : rechercher les réservations de sa classe --}}
+{{!-- Zone spécifique à l'étudiant : sélectionner la classe --}}
 {{#unless isEnseignant}}
   <form method="get" action="/reservations/ma-classe" style="margin-bottom: 20px;">
     <label for="classeId">Choisir la classe :</label>
@@ -24,7 +24,6 @@
     <button type="submit">Afficher les réservations</button>
   </form>
 {{/unless}}
-
 
 <hr>
 
@@ -56,11 +55,16 @@
 
           {{#if ../isEnseignant}}
             <td>
-              <form action="/reservations/{{id}}/annuler" method="post" style="display: inline;">
-                <button type="submit">Annuler</button>
-              </form>
+              {{!-- Bouton annuler --}}
+              <a href="/reservations/delete/{{id}}" 
+                 onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');">
+                Annuler
+              </a>
 
-              <a href="/reservations/{{id}}/edit">
+              &nbsp;|&nbsp;
+
+              {{!-- Lien modifier --}}
+              <a href="/reservations/edit/{{id}}">
                 Modifier
               </a>
             </td>
@@ -74,3 +78,4 @@
 {{else}}
   <p style="margin-top: 20px;">Aucune réservation trouvée pour cette recherche.</p>
 {{/if}}
+

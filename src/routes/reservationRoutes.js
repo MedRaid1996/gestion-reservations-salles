@@ -104,18 +104,55 @@ router.post("/", requireEnseignant, (req, res) => {
 
 
 
+// Formulaire modification réservation
+router.get("/edit/:id", requireEnseignant, (req, res) => {
+  const id = req.params.id;
 
+  const reservation = db.prepare("SELECT * FROM reservations WHERE id = ?").get(id);
+  const rooms = db.prepare("SELECT id, nom FROM rooms").all();
+  const classes = db.prepare("SELECT id, nom FROM classes").all();
 
-// Kamilia: PUT /reservations/:id (modifier une réservation)
-router.put("/:id", requireEnseignant, (req, res) => {
-  // TODO (Kamilia) : implémenter la modification de réservation
-  res.send("TODO: modifier une réservation (Kamilia)");
+  if (!reservation) return res.status(404).send("Réservation introuvable");
+
+  res.render("reservation_edit", {
+    title: "Modifier réservation",
+    reservation,
+    rooms,
+    classes
+  });
 });
 
-// Kamilia: POST /reservations/:id/annuler (annuler une réservation)
-router.post("/:id/annuler", requireEnseignant, (req, res) => {
-  // TODO (Kamilia) : implémenter l'annulation de réservation
-  res.send("TODO: annuler une réservation (Kamilia)");
+router.post("/edit/:id", requireEnseignant, (req, res) => {
+  const id = req.params.id;
+  const { salle_id, classe_id, date_debut, date_fin } = req.body;
+
+  try {
+    db.prepare(`
+      UPDATE reservations
+      SET salle_id = ?, classe_id = ?, date_debut = ?, date_fin = ?
+      WHERE id = ?
+    `).run(salle_id, classe_id, date_debut, date_fin, id);
+
+    res.redirect("/reservations/ma-classe");
+  } catch (err) {
+    console.error("Erreur modification :", err);
+    res.status(500).send("Erreur lors de la modification de la réservation.");
+  }
 });
+
+// Annuler (supprimer) une réservation
+router.get("/delete/:id", requireEnseignant, (req, res) => {
+  const id = req.params.id;
+
+  try {
+    db.prepare("DELETE FROM reservations WHERE id = ?").run(id);
+    res.redirect("/reservations/ma-classe");
+  } catch (err) {
+    console.error("Erreur suppression réservation :", err);
+    res.status(500).send("Erreur lors de l'annulation de la réservation.");
+  }
+});
+
+
 
 module.exports = router;

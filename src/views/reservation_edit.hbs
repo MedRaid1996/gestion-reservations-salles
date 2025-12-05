@@ -1,0 +1,41 @@
+{{> header}}
+
+<h2>Modifier une réservation</h2>
+
+<form method="post" action="/reservations/edit/{{reservation.id}}">
+  <label>Salle :</label>
+  <select name="salle_id">
+    {{#each rooms}}
+      <option value="{{id}}" {{#if (eq ../reservation.salle_id id)}}selected{{/if}}>
+        {{nom}}
+      </option>
+    {{/each}}
+  </select>
+
+  <br><br>
+
+  <label>Classe :</label>
+  <select name="classe_id">
+    {{#each classes}}
+      <option value="{{id}}" {{#if (eq ../reservation.classe_id id)}}selected{{/if}}>
+        {{nom}}
+      </option>
+    {{/each}}
+  </select>
+
+  <br><br>
+
+  <label>Date début :</label>
+  <input type="datetime-local" name="date_debut" value="{{reservation.date_debut}}">
+
+  <br><br>
+
+  <label>Date fin :</label>
+  <input type="datetime-local" name="date_fin" value="{{reservation.date_fin}}">
+
+  <br><br>
+
+  <button type="submit">Enregistrer les modifications</button>
+</form>
+
+{{> footer}}
