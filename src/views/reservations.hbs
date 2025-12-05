@@ -10,17 +10,21 @@
 {{!-- Zone spécifique à l'étudiant : rechercher les réservations de sa classe --}}
 {{#unless isEnseignant}}
   <form method="get" action="/reservations/ma-classe" style="margin-bottom: 20px;">
-    <label for="classeId">ID de la classe :</label>
-    <input type="number" id="classeId" name="classeId" value="{{classeId}}" />
+    <label for="classeId">Choisir la classe :</label>
 
-    <span style="margin: 0 8px;">ou</span>
+    <select id="classeId" name="classeId">
+      {{#each classes}}
+        <option value="{{id}}"
+          {{#if (eq ../selectedClasseId id)}}selected{{/if}}>
+          {{nom}}
+        </option>
+      {{/each}}
+    </select>
 
-    <label for="classeNom">Nom de la classe :</label>
-    <input type="text" id="classeNom" name="classeNom" value="{{classeNom}}" />
-
-    <button type="submit">Rechercher</button>
+    <button type="submit">Afficher les réservations</button>
   </form>
 {{/unless}}
+
 
 <hr>
 

@@ -9,13 +9,20 @@ const reservationRoutes = require("./routes/reservationRoutes");
 
 const app = express();
 
-
+// ---------- Configuration de Handlebars (hbs) ----------
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
+
+// Partials (header, footer, etc.)
 hbs.registerPartials(path.join(__dirname, "views", "partials"));
 
+// Helper personnalisé : eq (pour comparer dans les templates)
+hbs.registerHelper("eq", (a, b) => a == b);
+
+// ---------- Middlewares ----------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(
   session({
     secret: "unSecretBienCache",
@@ -24,8 +31,10 @@ app.use(
   })
 );
 
+// Fichiers statiques (CSS, images, etc.)
 app.use(express.static(path.join(__dirname, "..", "public")));
 
+// Variables globales pour les vues
 app.use((req, res, next) => {
   const user = req.session.user || null;
   res.locals.user = user;
@@ -33,11 +42,12 @@ app.use((req, res, next) => {
   next();
 });
 
-
+// ---------- Routes ----------
 app.use("/", authRoutes);
 app.use("/salles", roomRoutes);
 app.use("/reservations", reservationRoutes);
 
+// ---------- Lancement du serveur ----------
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Serveur sur http://localhost:${PORT}`);

@@ -4,21 +4,70 @@ const { requireAuth, requireEnseignant } = require("../middleware");
 const db = require("../db");
 // const { v4: uuidv4 } = require("uuid");
 
-// Zaid: GET /reservations/ma-classe
+// Liste des réservations (différent selon rôle)
 router.get("/ma-classe", requireAuth, (req, res) => {
-  const { classeId, classeNom } = req.query;
+  const user = req.session.user;
+  const { classeId } = req.query;
+  let reservations = [];
 
-  // Pour l'instant on laisse la liste vide,
-  // Zaid implémentera la requête SQLite ici !
-  const reservations = [];
+  try {
+    if (user.role === "ENSEIGNANT") {
+      // 🔹 Cas PROF : afficher les réservations qu'il a créées
+      reservations = db.prepare(`
+        SELECT r.id,
+               r.date_debut,
+               r.date_fin,
+               r.statut,
+               rm.nom  AS salleNom,
+               c.nom   AS classeNom
+        FROM reservations r
+        JOIN rooms   rm ON r.salle_id  = rm.id
+        JOIN classes c  ON r.classe_id = c.id
+        WHERE r.enseignant_id = ?
+        ORDER BY r.date_debut
+      `).all(user.id);
 
-  res.render("reservations", {
-    title: "Réservations de classe",
-    reservations,
-    classeId,
-    classeNom
-  });
+      return res.render("reservations", {
+        title: "Mes réservations",
+        reservations
+      });
+    }
+
+    // 🔹 Cas ÉTUDIANT : choisir la classe dans une liste
+    const classes = db.prepare("SELECT id, nom FROM classes").all();
+
+    // Si l'étudiant n'a rien choisi, on prend sa propre classe par défaut
+    const effectiveClasseId = classeId || user.classeId;
+    if (effectiveClasseId) {
+      reservations = db.prepare(`
+        SELECT r.id,
+               r.date_debut,
+               r.date_fin,
+               r.statut,
+               rm.nom  AS salleNom,
+               c.nom   AS classeNom
+        FROM reservations r
+        JOIN rooms   rm ON r.salle_id  = rm.id
+        JOIN classes c  ON r.classe_id = c.id
+        WHERE r.classe_id = ?
+        ORDER BY r.date_debut
+      `).all(effectiveClasseId);
+    }
+
+    return res.render("reservations", {
+      title: "Réservations de la classe",
+      reservations,
+      classes,
+      selectedClasseId: effectiveClasseId
+    });
+
+  } catch (err) {
+    console.error("Erreur récupération réservations :", err);
+    res.status(500).send("Erreur lors de la récupération des réservations.");
+  }
 });
+
+
 
 // Formulaire de réservation (enseignant seulement)
 router.get("/new", requireEnseignant, (req, res) => {
