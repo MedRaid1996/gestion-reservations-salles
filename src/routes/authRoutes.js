@@ -14,6 +14,7 @@ router.get("/login", (req, res) => {
 });
 
 // POST login
+// POST login
 router.post("/login", (req, res) => {
   const { email, motDePasse } = req.body;
 
@@ -30,7 +31,7 @@ router.post("/login", (req, res) => {
     });
   }
 
-  // Save user in session
+  // On enregistre l'utilisateur dans la session
   req.session.user = {
     id: user.id,
     nom: user.nom,
@@ -38,8 +39,19 @@ router.post("/login", (req, res) => {
     classeId: user.classe_id
   };
 
-  res.redirect("/salles");
+  // Redirection différente selon le rôle 
+  if (user.role === "ENSEIGNANT") {
+    // L’enseignant va vers la liste des salles
+    return res.redirect("/salles");
+  } else if (user.role === "ETUDIANT") {
+    // L’étudiant va vers les réservations de SA classe
+    return res.redirect("/reservations/ma-classe");
+  } else {
+    // Cas improbable : rôle inconnu
+    return res.redirect("/login");
+  }
 });
+
 
 // POST logout
 router.post("/logout", (req, res) => {

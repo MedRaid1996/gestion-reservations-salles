@@ -27,9 +27,12 @@ app.use(
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
+  const user = req.session.user || null;
+  res.locals.user = user;
+  res.locals.isEnseignant = !!(user && user.role === "ENSEIGNANT");
   next();
 });
+
 
 app.use("/", authRoutes);
 app.use("/salles", roomRoutes);

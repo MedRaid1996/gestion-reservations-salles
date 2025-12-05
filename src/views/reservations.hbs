@@ -1,6 +1,18 @@
-<h2>Réservations de ma classe</h2>
+<h2>Réservations de classe</h2>
 
-<p>Cette page affichera les réservations associées à la classe de l'utilisateur.</p>
+<form method="get" action="/reservations/ma-classe">
+  <label for="classeId">ID de la classe :</label>
+  <input type="number" id="classeId" name="classeId" value="{{classeId}}" />
+
+  <span>ou</span>
+
+  <label for="classeNom">Nom de la classe :</label>
+  <input type="text" id="classeNom" name="classeNom" value="{{classeNom}}" />
+
+  <button type="submit">Rechercher</button>
+</form>
+
+<hr>
 
 <table border="1" cellpadding="5">
   <thead>
@@ -10,7 +22,6 @@
       <th>Début</th>
       <th>Fin</th>
       <th>Statut</th>
-      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -22,16 +33,11 @@
           <td>{{date_debut}}</td>
           <td>{{date_fin}}</td>
           <td>{{statut}}</td>
-          <td>
-            <!-- Actions pour Kamilia -->
-            <button data-id="{{id}}" class="btn-modifier">Modifier</button>
-            <button data-id="{{id}}" class="btn-annuler">Annuler</button>
-          </td>
         </tr>
       {{/each}}
     {{else}}
       <tr>
-        <td colspan="6">Aucune réservation pour le moment.</td>
+        <td colspan="5">Aucune réservation trouvée pour cette classe.</td>
       </tr>
     {{/if}}
   </tbody>

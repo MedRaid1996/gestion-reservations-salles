@@ -9,9 +9,17 @@
       </form>
     </div>
 
-    <nav class="main-nav">
-      <a href="/salles">Salles</a>
-      <a href="/reservations/ma-classe">Mes réservations</a>
-    </nav>
+        <nav class="main-nav">
+  {{#if isEnseignant}}
+    {{!-- Professeur --}}
+    <a href="/salles">Salles</a>
+    <a href="/reservations/ma-classe">Mes réservations</a>
+  {{else}}
+    {{!-- Étudiant --}}
+    <a href="/reservations/ma-classe">Consulter les réservations de ma classe</a>
+    <a href="/salles">Liste des salles</a>
+  {{/if}}
+</nav>
+
   {{/if}}
 </header>
