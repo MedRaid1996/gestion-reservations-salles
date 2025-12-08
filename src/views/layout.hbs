@@ -1,3 +1,9 @@
+{{!-- 
+  Template principal (layout) de l'application
+  Ce fichier contient la structure HTML commune à toutes les pages
+  Variables attendues : title (titre de la page)
+  Le contenu spécifique de chaque page est inséré dans {{{ body }}}
+--}}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,13 +12,15 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
+    {{!-- Inclusion du partial header (menu de navigation) --}}
     {{> header }}
 
+    {{!-- Contenu principal de la page (variable selon la vue) --}}
     <main>
         {{{ body }}}
     </main>
 
+    {{!-- Inclusion du partial footer --}}
     {{> footer }}
 
 </body>

@@ -1,12 +1,17 @@
-{{! Use the layout }}
-{{! Handlebars automatically injects into body  }}
+{{!-- 
+  Page de connexion
+  Affiche un formulaire de login avec email et mot de passe
+  Variables attendues : error (message d'erreur optionnel)
+--}}
 
 <h2>Connexion</h2>
 
+{{!-- Affichage du message d'erreur si les identifiants sont invalides --}}
 {{#if error}}
   <p style="color:red">{{error}}</p>
 {{/if}}
 
+{{!-- Formulaire de connexion --}}
 <form method="post" action="/login">
   <label>Email :</label>
   <input type="email" name="email" required>

@@ -1,8 +1,18 @@
+{{!-- 
+  Page de création d'une nouvelle réservation
+  Accessible uniquement aux enseignants
+  Variables attendues :
+  - rooms : tableau des salles disponibles
+  - classes : tableau des classes disponibles
+--}}
+
 <h2>Créer une nouvelle réservation</h2>
 
+{{!-- Formulaire de création de réservation --}}
 <form action="/reservations" method="post">
   <label for="salle">Salle :</label>
   <select name="salle_id" id="salle" required>
+    {{!-- Liste déroulante des salles disponibles --}}
     {{#each rooms}}
       <option value="{{id}}">{{nom}}</option>
     {{/each}}
@@ -10,6 +20,7 @@
 
   <label for="classe">Classe :</label>
   <select name="classe_id" id="classe" required>
+    {{!-- Liste déroulante des classes disponibles --}}
     {{#each classes}}
       <option value="{{id}}">{{nom}}</option>
     {{/each}}

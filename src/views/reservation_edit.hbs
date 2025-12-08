@@ -1,10 +1,21 @@
+{{!-- 
+  Page de modification d'une réservation existante
+  Accessible uniquement aux enseignants
+  Variables attendues :
+  - reservation : objet contenant les données de la réservation à modifier
+  - rooms : tableau des salles disponibles
+  - classes : tableau des classes disponibles
+--}}
+
 {{> header}}
 
 <h2>Modifier une réservation</h2>
 
+{{!-- Formulaire de modification pré-rempli avec les données actuelles --}}
 <form method="post" action="/reservations/edit/{{reservation.id}}">
   <label>Salle :</label>
   <select name="salle_id">
+    {{!-- Liste des salles avec sélection de la salle actuelle --}}
     {{#each rooms}}
       <option value="{{id}}" {{#if (eq ../reservation.salle_id id)}}selected{{/if}}>
         {{nom}}
@@ -16,6 +27,7 @@
 
   <label>Classe :</label>
   <select name="classe_id">
+    {{!-- Liste des classes avec sélection de la classe actuelle --}}
     {{#each classes}}
       <option value="{{id}}" {{#if (eq ../reservation.classe_id id)}}selected{{/if}}>
         {{nom}}

@@ -1,5 +1,12 @@
+{{!-- 
+  Page d'affichage de la liste des salles
+  Accessible à tous les utilisateurs connectés
+  Variables attendues : rooms (tableau d'objets salle avec nom, capacite, localisation)
+--}}
+
 <h2>Liste des salles</h2>
 
+{{!-- Affichage du tableau des salles si au moins une salle existe --}}
 {{#if rooms.length}}
   <table border="1" cellpadding="5">
     <thead>
@@ -10,6 +17,7 @@
       </tr>
     </thead>
     <tbody>
+      {{!-- Boucle sur chaque salle pour afficher ses informations --}}
       {{#each rooms}}
         <tr>
           <td>{{nom}}</td>

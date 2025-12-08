@@ -1,18 +1,29 @@
+{{!-- 
+  Page d'affichage des réservations
+  Variables attendues :
+  - title : titre de la page
+  - reservations : tableau d'objets réservation
+  - isEnseignant : booléen indiquant si l'utilisateur est un enseignant
+  - classes : tableau des classes (pour les étudiants)
+  - selectedClasseId : ID de la classe sélectionnée (pour les étudiants)
+--}}
+
 <h2>{{title}}</h2>
 
-{{!-- Zone spécifique à l'enseignant : Création réservation --}}
+{{!-- Bouton de création de réservation (visible uniquement pour les enseignants) --}}
 {{#if isEnseignant}}
   <a href="/reservations/new" class="btn" style="margin-bottom: 15px; display: inline-block;">
     ➕ Créer une réservation
   </a>
 {{/if}}
 
-{{!-- Zone spécifique à l'étudiant : sélectionner la classe --}}
+{{!-- Sélecteur de classe (visible uniquement pour les étudiants) --}}
 {{#unless isEnseignant}}
   <form method="get" action="/reservations/ma-classe" style="margin-bottom: 20px;">
     <label for="classeId">Choisir la classe :</label>
 
     <select id="classeId" name="classeId">
+      {{!-- Liste déroulante des classes disponibles --}}
       {{#each classes}}
         <option value="{{id}}"
           {{#if (eq ../selectedClasseId id)}}selected{{/if}}>
@@ -45,6 +56,7 @@
     </thead>
 
     <tbody>
+      {{!-- Boucle sur chaque réservation pour afficher ses informations --}}
       {{#each reservations}}
         <tr>
           <td>{{salleNom}}</td>
@@ -53,9 +65,10 @@
           <td>{{date_fin}}</td>
           <td>{{statut}}</td>
 
+          {{!-- Actions disponibles uniquement pour les enseignants --}}
           {{#if ../isEnseignant}}
             <td>
-              {{!-- Bouton annuler --}}
+              {{!-- Lien pour annuler la réservation (avec confirmation) --}}
               <a href="/reservations/delete/{{id}}" 
                  onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');">
                 Annuler
@@ -63,7 +76,7 @@
 
               &nbsp;|&nbsp;
 
-              {{!-- Lien modifier --}}
+              {{!-- Lien pour modifier la réservation --}}
               <a href="/reservations/edit/{{id}}">
                 Modifier
               </a>

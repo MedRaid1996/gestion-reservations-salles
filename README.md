@@ -135,7 +135,23 @@ plusieurs diagrammes de séquence
 
 Ils reflètent le comportement réel du système.
 
-9. Conclusion
+9. Exemples d'utilisation
+
+Pour faciliter la prise en main de l'application, un guide complet d'exemples d'utilisation est disponible. Ce guide présente des cas d'utilisation concrets avec des étapes détaillées pour :
+
+- Créer, consulter, modifier et annuler des réservations
+- Utiliser l'application en tant qu'enseignant ou étudiant
+- Comprendre le fonctionnement du système avec des scénarios réalistes
+
+📖 **Consulter le guide** : [docs/exemples_utilisation.md](docs/exemples_utilisation.md)
+
+Le guide inclut :
+- Instructions d'installation et de démarrage
+- 6 cas d'utilisation détaillés avec pré-conditions, étapes et résultats attendus
+- Un scénario complet de bout en bout
+- Des exemples de données et de résultats visuels
+
+10. Conclusion
 
 Ce projet met en pratique plusieurs notions vues en cours :
 
