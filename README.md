@@ -9,7 +9,7 @@ L'application permet de créer, consulter, modifier et annuler des réservations
 
 | Nom | Rôle | Contribution |
 |-----|------|--------------|
-| Raid Sellai | Développeur principal | Authentification, architecture générale, intégration, tests |
+| Mohammed Raid Sellai | Développeur principal | Authentification, architecture générale, intégration, tests |
 | Ali Boutaha | Collaborateur | Création des réservations |
 | Zaid Messahli | Collaborateur | Consultation des réservations |
 | Kamilia Gamouri | Collaboratrice | Modification et annulation des réservations |
