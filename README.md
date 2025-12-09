@@ -1,152 +1,181 @@
-# gestion-reservations-salles
+# Système de Gestion des Réservations de Salles
 
-Système de Gestion des Réservations de Salles
+Ce projet a été réalisé dans le cadre du cours d'Analyse et conception de systèmes.
+L'objectif est de permettre la gestion des réservations de salles dans un établissement scolaire, avec deux types d'utilisateurs : enseignants et étudiants.
 
-Ce projet a été réalisé dans le cadre du cours de développement web.
-L’objectif est de permettre la gestion des réservations de salles dans un établissement scolaire, avec deux types d’utilisateurs : enseignants et étudiants.
+L'application permet de créer, consulter, modifier et annuler des réservations selon le rôle de l'utilisateur.
 
-L’application permet de créer, consulter, modifier et annuler des réservations selon le rôle de l’utilisateur.
+## 1. Équipe du projet
 
-1. Équipe du projet
-Nom	Rôle	Contribution
-Raid Sellai	Développeur principal	Authentification, architecture générale, intégration, tests
-Ali Boutaha	Collaborateur	Création des réservations
-Zaid Messahli	Collaborateur	Consultation des réservations
-Kamilia Gamouri	Collaboratrice	Modification et annulation des réservations
-2. Fonctionnalités
-Authentification
+| Nom | Rôle | Contribution |
+|-----|------|--------------|
+| Raid Sellai | Développeur principal | Authentification, architecture générale, intégration, tests |
+| Ali Boutaha | Collaborateur | Création des réservations |
+| Zaid Messahli | Collaborateur | Consultation des réservations |
+| Kamilia Gamouri | Collaboratrice | Modification et annulation des réservations |
 
-Connexion avec email et mot de passe
+## 2. Fonctionnalités
 
-Gestion d’une session utilisateur
+### Authentification
+- Connexion avec email et mot de passe
+- Gestion d'une session utilisateur
+- Distinction entre enseignant et étudiant
 
-Distinction entre enseignant et étudiant
+### Enseignant
+- Créer une réservation
+- Voir ses propres réservations
+- Modifier une réservation
+- Annuler une réservation
 
-Enseignant
+### Étudiant
+- Choisir une classe dans une liste
+- Consulter les réservations associées à cette classe
 
-Créer une réservation
+## 3. Technologies utilisées
 
-Voir ses propres réservations
+- Node.js
+- Express.js
+- SQLite avec sql.js (JavaScript pur, pas de compilation native)
+- Handlebars (hbs)
+- express-session
+- bcrypt (hashage sécurisé des mots de passe)
+- HTML / CSS
 
-Modifier une réservation
+**Note importante** : Le projet utilise sql.js au lieu de better-sqlite3, ce qui élimine le besoin de Visual Studio Build Tools et assure la compatibilité avec toutes les versions de Node.js.
 
-Annuler une réservation
+## 4. Structure du projet
 
-Étudiant
+```
+gestion-reservations-salles/
+├── src/
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── roomRoutes.js
+│   │   └── reservationRoutes.js
+│   ├── views/
+│   │   ├── layouts/
+│   │   │   └── main.hbs
+│   │   ├── partials/
+│   │   │   ├── header.hbs
+│   │   │   └── footer.hbs
+│   │   ├── login.hbs
+│   │   ├── rooms.hbs
+│   │   ├── reservations.hbs
+│   │   ├── reservation_new.hbs
+│   │   └── reservation_edit.hbs
+│   ├── app.js
+│   ├── db.js
+│   └── middleware.js
+├── data/
+│   └── reservations.db
+├── public/
+│   └── css/
+│       └── styles.css
+├── init-db.js
+├── package.json
+└── README.md
+```
 
-Choisir une classe dans une liste
+## 5. Installation et exécution
 
-Consulter les réservations associées à cette classe
+### Prérequis
+- Node.js (version 18 ou supérieure recommandée)
+- npm (inclus avec Node.js)
 
-3. Technologies utilisées
+### Installation des dépendances
 
-Node.js
-
-Express.js
-
-SQLite3
-
-SQLiteStudio (gestion de la base de données)
-
-Handlebars (hbs)
-
-express-session
-
-HTML / CSS
-
-4. Structure du projet
-/src
-  /routes
-    authRoutes.js
-    roomRoutes.js
-    reservationRoutes.js
-  /views
-    /partials
-    login.hbs
-    salles.hbs
-    reservations.hbs
-    reservation_new.hbs
-    reservation_edit.hbs
-  app.js
-/db
-  reservations.db
-/public
-  styles.css
-README.md
-package.json
-
-5. Installation et exécution
-Installation des dépendances
+```bash
 npm install
+```
 
-Lancement du serveur
+### Initialisation de la base de données
+
+```bash
+node init-db.js
+```
+
+### Lancement du serveur
+
+```bash
 npm run dev
+```
 
+L'application sera accessible à : **http://localhost:3000**
 
-L’application sera accessible à :
-http://localhost:3000
+## 6. Comptes de test
 
-6. Base de données
+### Enseignant
+- **Email** : prof@example.com
+- **Mot de passe** : password123
 
-Le système utilise SQLite.
+### Étudiant
+- **Email** : etudiant@example.com
+- **Mot de passe** : password123
+
+## 7. Base de données
+
+Le système utilise SQLite avec sql.js.
 La table des réservations est configurée avec un identifiant auto-incrémenté :
 
+```sql
 id INTEGER PRIMARY KEY AUTOINCREMENT
-
+```
 
 Les autres tables utilisées sont :
 
-users (rôle, email, mot de passe, classe associée)
+- **users** : rôle, email, mot de passe, classe associée
+- **rooms** : liste des salles
+- **classes** : groupes d'étudiants
+- **reservations** : réservations de salles
 
-rooms (liste des salles)
+## 8. Scénarios de test
 
-classes (groupes d’étudiants)
+### Ensemble des tests pour l'enseignant
+1. Se connecter
+2. Créer une réservation
+3. Modifier une réservation existante
+4. Annuler une réservation
+5. Vérifier la mise à jour en base de données
 
-7. Scénarios de test
-Ensemble des tests pour l’enseignant
+### Ensemble des tests pour l'étudiant
+1. Se connecter
+2. Choisir une classe
+3. Afficher les réservations correspondantes
 
-Se connecter
-
-Créer une réservation
-
-Modifier une réservation existante
-
-Annuler une réservation
-
-Vérifier la mise à jour en base de données
-
-Ensemble des tests pour l’étudiant
-
-Se connecter
-
-Choisir une classe
-
-Afficher les réservations correspondantes
-
-8. Diagrammes UML
+## 9. Diagrammes UML
 
 Le projet est accompagné de :
-
-un diagramme de cas d’utilisation
-
-un mini-diagramme de classes
-
-plusieurs diagrammes de séquence
+- un diagramme de cas d'utilisation
+- un mini-diagramme de classes
+- plusieurs diagrammes de séquence
 
 Ils reflètent le comportement réel du système.
 
-9. Conclusion
+## 10. Scripts disponibles
 
-Ce projet met en pratique plusieurs notions vues en cours :
+- **npm start** : Lance le serveur en mode production
+- **npm run dev** : Lance le serveur en mode développement avec nodemon
+- **node init-db.js** : Initialise ou réinitialise la base de données
 
-développement avec Express
+## 11. Problèmes courants et solutions
 
-gestion d'une base de données SQLite
+### Le serveur ne démarre pas
+**Solution** : Vérifiez que le port 3000 n'est pas déjà utilisé ou supprimez node_modules et relancez `npm install`
 
-utilisation d’un moteur de templates
+### La base de données est vide
+**Solution** : Exécutez `node init-db.js` pour réinitialiser la base de données
 
-gestion de rôles et d’accès
+### Impossible de se connecter
+**Solution** : Vérifiez les identifiants ou réinitialisez la base de données avec `node init-db.js`
 
-organisation du code et travail collaboratif via GitHub
+## 12. Conclusion
 
-Le système final est fonctionnel et couvre toutes les fonctionnalités demandées dans l’énoncé.
+Ce projet met en pratique plusieurs notions vues en cours d'Analyse et conception de systèmes :
+
+- Développement avec Express
+- Gestion d'une base de données SQLite
+- Utilisation d'un moteur de templates
+- Gestion de rôles et d'accès
+- Organisation du code et travail collaboratif via GitHub
+
+Le système final est fonctionnel et couvre toutes les fonctionnalités demandées dans l'énoncé.
