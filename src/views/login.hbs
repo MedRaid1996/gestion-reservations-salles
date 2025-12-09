@@ -1,0 +1,18 @@
+{{! Use the layout }}
+{{! Handlebars automatically injects into body  }}
+
+<h2>Connexion</h2>
+
+{{#if error}}
+  <p style="color:red">{{error}}</p>
+{{/if}}
+
+<form method="post" action="/login">
+  <label>Email :</label>
+  <input type="email" name="email" required>
+
+  <label>Mot de passe :</label>
+  <input type="password" name="motDePasse" required>
+
+  <button type="submit">Se connecter</button>
+</form>

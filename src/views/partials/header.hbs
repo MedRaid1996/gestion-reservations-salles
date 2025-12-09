@@ -1,0 +1,25 @@
+<header class="main-header">
+  <h1>Système de gestion des réservations de salles</h1>
+
+  {{#if user}}
+    <div class="user-info">
+      Connecté : <strong>{{user.nom}}</strong> ({{user.role}})
+      <form action="/logout" method="post" class="logout-form">
+        <button type="submit">Se déconnecter</button>
+      </form>
+    </div>
+
+        <nav class="main-nav">
+  {{#if isEnseignant}}
+    {{!-- Professeur --}}
+    <a href="/salles">Salles</a>
+    <a href="/reservations/ma-classe">Mes réservations</a>
+  {{else}}
+    {{!-- Étudiant --}}
+    <a href="/reservations/ma-classe">Consulter les réservations de ma classe</a>
+    <a href="/salles">Liste des salles</a>
+  {{/if}}
+</nav>
+
+  {{/if}}
+</header>

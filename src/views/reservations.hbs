@@ -1,0 +1,81 @@
+<h2>{{title}}</h2>
+
+{{!-- Zone spécifique à l'enseignant : Création réservation --}}
+{{#if isEnseignant}}
+  <a href="/reservations/new" class="btn" style="margin-bottom: 15px; display: inline-block;">
+    ➕ Créer une réservation
+  </a>
+{{/if}}
+
+{{!-- Zone spécifique à l'étudiant : sélectionner la classe --}}
+{{#unless isEnseignant}}
+  <form method="get" action="/reservations/ma-classe" style="margin-bottom: 20px;">
+    <label for="classeId">Choisir la classe :</label>
+
+    <select id="classeId" name="classeId">
+      {{#each classes}}
+        <option value="{{id}}"
+          {{#if (eq ../selectedClasseId id)}}selected{{/if}}>
+          {{nom}}
+        </option>
+      {{/each}}
+    </select>
+
+    <button type="submit">Afficher les réservations</button>
+  </form>
+{{/unless}}
+
+<hr>
+
+{{!-- Tableau des réservations --}}
+{{#if reservations.length}}
+  <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Salle</th>
+        <th>Classe</th>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Statut</th>
+
+        {{#if isEnseignant}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each reservations}}
+        <tr>
+          <td>{{salleNom}}</td>
+          <td>{{classeNom}}</td>
+          <td>{{date_debut}}</td>
+          <td>{{date_fin}}</td>
+          <td>{{statut}}</td>
+
+          {{#if ../isEnseignant}}
+            <td>
+              {{!-- Bouton annuler --}}
+              <a href="/reservations/delete/{{id}}" 
+                 onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');">
+                Annuler
+              </a>
+
+              &nbsp;|&nbsp;
+
+              {{!-- Lien modifier --}}
+              <a href="/reservations/edit/{{id}}">
+                Modifier
+              </a>
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+
+  </table>
+
+{{else}}
+  <p style="margin-top: 20px;">Aucune réservation trouvée pour cette recherche.</p>
+{{/if}}
+
